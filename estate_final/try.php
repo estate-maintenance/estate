@@ -2,7 +2,7 @@
 session_start();
 require_once('header.php');
 require_once('conn.php');
-$sql="SELECT * FROM complaints WHERE username='$_SESSION[user]'";
+$sql="SELECT * FROM elcomplaints WHERE username='$_SESSION[user]'";
 $result=mysql_query($sql,$conn);
 $num=mysql_num_rows($result);
 
@@ -12,9 +12,9 @@ if($num > 0)
 ?>
 <div id="content">
 
-<div id="right">
+<div id="myright">
 
-<table align="center" width="80%" id="table1">
+<table align="center" width="90%" id="table1">
 <tr style="background-color: Orange;">
 <th>Time</th>
 <th>ID</th>

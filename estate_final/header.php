@@ -28,13 +28,13 @@ else
 <div id="menu">
   <ul id="nav">
   <?php 
-   if($role==1)
+   if($role==1 or $role==2)
    echo '<li><a href="index.php">Home</a></li>';
    if($role==1)
    echo '<li><a href="try.php">My Complaints</a></li>';  
    if($role==5)
    echo '<li><a href="add_user.php">Add Users</a></li>';
-   if($role==2 or $role==5)
+   if($role==5)
    echo '<li><a href="reports.php">Reports</a></li>';
    if($role==3 or $role==5)
    echo '<li><a href="reports_final.php">Final Reports</a></li>';

@@ -19,7 +19,7 @@ require_once('conn.php');
 		
 		if(1)
 		{
-			$sql="Select id,name,designation,department,location,description,processed,area,time,room, dispatchedTime,finishedTime,contactPerson, contactNumber, availablefrom,availableto,contact from complaints ";
+			$sql="Select id,name,designation,location,description,processed,area,time,room, dispatchedTime,finishedTime,contactPerson, contactNumber,contact from complaints ";
 			$status="and";
 			$sql.="where ( 1=1 ";
 
@@ -73,7 +73,7 @@ require_once('conn.php');
 
 		}
 		else
-		$sql="Select id,name,designation,department,location,description,processed,area,time, contactPerson, contactNumber, room,timing,availablefrom,availableto,contact, dispatchedTime,finishedTime from complaints where processed=2 order by time ASC";
+		$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber, room,timing,contact, dispatchedTime,finishedTime from complaints where processed=2 order by time ASC";
 		$result=mysql_query($sql,$conn);
 
 ?>
@@ -178,7 +178,7 @@ function chkclick(id,str)
 <div id="menu" >
   <ul id="nav1">
   <?php 
-  echo '<a href="reports_final.php"><center>UnFinished</center></a>' ;
+  echo '<a href="unfinished.php"><center>UnFinished</center></a>' ;
 echo'<a href="finished.php"><center>Finished</center></a>';  
 	
 	?>	

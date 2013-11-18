@@ -1,17 +1,30 @@
-<head>
-<style>
-
-</style>
-</head>
-
 <?php
 require_once('functions.php');
 secure(1);
 require_once('conn.php');
 if($_SESSION['type']==4)
 header("Location: materialsForm.php");
+if($_SESSION['type']==1)
+{
+$el="electrical.php";
+$sn="sanitary.php";
+$cp="carpentry.php";
+$bl="building.php";
+$ht="horticulture.php";
+$ws="water_supply.php";
+$gn="general.php";
+}
+
 if($_SESSION['type']==2)
-header("Location: reports.php");
+{
+$el="elreports.php";
+$sn="snreports.php";
+$cp="cpreports.php";
+$bl="blreports.php";
+$ht="htreports.php";
+$ws="wsreports.php";
+$gn="gnreports.php";
+}
 if($_SESSION['type']==3)
 header("Location: reports_final.php");
 if($_SESSION['type']==5)
@@ -43,25 +56,25 @@ header("Location: general.php");
 <div id="rightj">
 <div align="center">
 <div id="c1" style="width:25%;height:200px;float:left;margin-top:20px;">
-<a href="electrical.php"><img src="images/electrical.jpg" style="height:80%;width:70%;"/><br/><br/>ELECTRICAL</a>
+<a href="<?php echo$el?>"><img src="images/electrical.jpg" style="height:80%;width:70%;"/><br/><br/>ELECTRICAL</a>
 </div>
 <div id="c2" style="width:25%;height:200px;float:left;margin-top:20px;">
-<a href="carpentry.php"><img src="images/carpentry.jpg" style="height:80%;width:70%;"/><br/><br/>CARPENTRY</a>
+<a href="<?php echo$cp?>"><img src="images/carpentry.jpg" style="height:80%;width:70%;"/><br/><br/>CARPENTRY</a>
 </div>
 <div id="c3" style="width:25%;height:200px;float:left;margin-top:20px;">
-<a href="building.php"><img src="images/masonry.jpg" style="height:80%;width:70%;"/><br/><br/>BUILDING</a>
+<a href="<?php echo$bl?>"><img src="images/masonry.jpg" style="height:80%;width:70%;"/><br/><br/>BUILDING</a>
 </div>
 <div id="c4" style="width:25%;height:200px;float:left;margin-top:20px;">
-<a href="sanitary.php"><img src="images/drain.jpg" style="height:80%;width:70%;"/><br/><br/>SANITARY</a>
+<a href="<?php echo$sn?>"><img src="images/drain.jpg" style="height:80%;width:70%;"/><br/><br/>SANITARY</a>
 </div>
 <div id="c5" style="width:25%;height:200px;float:left;margin-left:130px;margin-top:40px;">
-<a href="water_supply.php"><img src="images/water.jpg" style="height:80%;width:70%;"/><br/><br/>WATER SUPPLY</a>
+<a href="<?php echo$ws?>"><img src="images/water.jpg" style="height:80%;width:70%;"/><br/><br/>WATER SUPPLY</a>
 </div>
 <div id="c6" style="width:25%;height:200px;float:left;margin-top:40px;">
-<a href="horticulture.php"><img src="images/horti.jpg" style="height:80%;width:70%;"/><br/><br/>HORTICULTURE</a>
+<a href="<?php echo$ht?>"><img src="images/horti.jpg" style="height:80%;width:70%;"/><br/><br/>HORTICULTURE</a>
 </div>
 <div id="c7" style="width:25%;height:200px;float:left;margin-top:40px;">
-<a href="general.php"><img src="images/general.jpg" style="height:80%;width:70%;"/><br/><br/>GENERAL</a>
+<a href="<?php echo$gn?>"><img src="images/general.jpg" style="height:80%;width:70%;"/><br/><br/>GENERAL</a>
 </div>
 </div>
 </div>

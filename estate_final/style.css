@@ -1,4 +1,3 @@
-
 html,body{margin:0;padding:0}
 body{font: 85%/1.3 TrebuchetMS,Arial,sans-serif;
     text-align: left;background: #fff;padding-bottom:20px}
@@ -9,8 +8,8 @@ h2 { font: bold 1.1em Arial, Arial, Sans-Serif; padding: 0; margin: 0; }
 div#header{width:100%;overflow:hidden;background: #BBD9EE; }
 div#header h1,div#menu{width:1000px;margin:0 auto;text-align:left}
 div#header h1{padding: 10px 0 10px;color:"blue"}
-div#footer{width:100%;overflow:hidden;background: #BBD9EE; margin-bottom:0px; height:50px; color:#FFFFFF; position:fixed; bottom:0px;}
-div#footer h1{color: #ffffff; font-size:14px}
+div#footer{width:100%;overflow:hidden; margin-bottom:0px; height:21px; color:white; position:fixed; bottom:0px;}
+div#footer h1{ font-size:14px}
 
 ul#nav,ul#nav li{list-style-type:none;margin:0;padding:0;}
 ul#nav{font-size: 80%}
@@ -29,7 +28,7 @@ ul#nav1 li.activelink a,ul#nav li.activelink a:hover{background: #FFF;color: #00
 #nright {
 	float: left;
 	width: 77%;
-	max-height: 400px;
+	max-height: 290px;
 	overflow-y: scroll;
 	overflow-x: scroll;
 	padding: 1em;
@@ -42,7 +41,7 @@ ul#nav1 li.activelink a,ul#nav li.activelink a:hover{background: #FFF;color: #00
 #n1right {
 	float: left;
 	width: 77%;
-	max-height: 375px;
+	max-height: 285px;
 	overflow-y: scroll;
 	overflow-x: scroll;
 	padding: 1em;
@@ -75,6 +74,18 @@ ul#nav1 li.activelink a,ul#nav li.activelink a:hover{background: #FFF;color: #00
 	background: #eee;
 	text-align: justify;
 }
+#myright {
+	float: left;
+	width: 99%;
+        height:425px;
+	overflow-y: scroll;
+	overflow-x: scroll;
+	padding: 1em;
+	margin-bottom: 1.2em;
+	background: #eee;
+	text-align: justify;
+}
+
 #righti {
 	float: left;
 	width: 80%;
@@ -117,6 +128,14 @@ ul#nav1 li.activelink a,ul#nav li.activelink a:hover{background: #FFF;color: #00
         height:150px;
 	background:#fff;
 }
+#left1 {
+	float: right;
+   position:absolute;top:200px;right:10px;
+	width: 20%;
+	margin: 0 0 10px 0;
+        height:150px;
+	background:#fff;
+}
 
 #left .box {
 	
@@ -125,10 +144,16 @@ ul#nav1 li.activelink a,ul#nav li.activelink a:hover{background: #FFF;color: #00
 	background : #E0F5FF;
 }
 
+#left1 .box {
+	
+	padding: 1em;
+	margin: 0 0 1em 0;
+	background : #E0F5FF;
+}
 
 #content {
 font: 95%/1.3 TrebuchetMS,Arial,sans-serif;
-     
+         
 	margin: 0 auto;
     padding: 15px;
 	background:#fff ;
@@ -244,4 +269,12 @@ float: right;
 	width: 100%;
 }
 
+@media print {
+input#btnPrint {
+display: none;
+}
+input#btnBack {
+display: none;
+}
+}
 

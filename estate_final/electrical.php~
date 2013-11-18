@@ -268,73 +268,6 @@ function designationChange()
 			document.getElementById("otherdesig").style.display='none'
 
 }
-function pde()
-{
-	if(document.getElementById('p6').checked)
-	{
-		document.getElementById('pdesc').style.display="block";
-		document.getElementById('pdesc1').style.display="none";
-		document.getElementById('descBox').style.display="block";
-	}
-	else
-	{
-		document.getElementById('pdesc').style.display="none";
-		document.getElementById('pdesc1').style.display="block";
-		document.getElementById('descBox').style.display="none";
-	}
-}
-
-function of1()
-{
-	if(document.getElementById('d1').checked)
-	{
-		document.getElementById('dd1').disabled=false;
-	}
-	else
-	{
-		document.getElementById('dd1').disabled=true;
-		document.getElementById('dd1').value="";
-	}
-}
-
-function of2()
-{
-	if(document.getElementById('d2').checked)
-	{
-		document.getElementById('dd2').disabled=false;
-	}
-	else
-	{
-		document.getElementById('dd2').disabled=true;
-		document.getElementById('dd2').value="";
-	}
-}
-
-function of3()
-{
-	if(document.getElementById('d3').checked)
-	{
-		document.getElementById('dd3').disabled=false;
-	}
-	else
-	{
-		document.getElementById('dd3').disabled=true;
-		document.getElementById('dd3').value="";
-	}
-}
-
-function of4()
-{
-	if(document.getElementById('d4').checked)
-	{
-		document.getElementById('dd4').disabled=false;
-	}
-	else
-	{
-		document.getElementById('dd4').disabled=true;
-		document.getElementById('dd4').value="";
-	}
-}
 
 </script>
 <form name="form1" method="post" onsubmit="return validate()">
@@ -443,10 +376,10 @@ Bathroom/Toilets <input type="checkbox" checked="checked" name="h3" value="4"  /
 	}}
 ?>
 </select>
-<br /><input type="checkbox" name="d1" value="1" id="d1" onClick="of1()" />Lab &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textbox" name="dd1" size="7px"  disabled/><br />
-<input type="checkbox" name="d2" value="2" id="d2" onClick="of2()" />Toilets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textbox" name="dd2" size="7px" disabled /><br/>
-<input type="checkbox" name="d3" value="4"id="d3" onClick="of3()"   />Office &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textbox" name="dd3" size="7px" disabled /><br/>
-<input type="checkbox" name="d4" value="8" id="d4" onClick="of4()"/>Classroom &nbsp;<input type="textbox" name="dd4" size="7px" disabled/><br />
+<br /><input type="checkbox" name="d1" value="1"  />Lab &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textbox" name="dd1" size="7px"  /><br />
+<input type="checkbox" name="d2" value="2"  />Toilets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textbox" name="dd2" size="7px"  /><br/>
+<input type="checkbox" name="d3" value="4"   />Office &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="textbox" name="dd3" size="7px"  /><br/>
+<input type="checkbox" name="d4" value="8" />Classroom &nbsp;<input type="textbox" name="dd4" size="7px"  /><br />
 
 </div>
 <div style="display:none" id="4">
@@ -497,8 +430,8 @@ Bathroom/Toilets <input type="checkbox" checked="checked" name="h3" value="4"  /
 <td align="left">
 
 <input type="checkbox" name="p6" value="32" />Power Failure (Fuse).<br><br>
-<input type="checkbox" id = "descCheck" name="p7" value="64" id="p6"  onClick="pde()"/>Others<br>
-<textarea id = "descBox" name = "descBox" rows = "3" cols = "25" PLACEHOLDER="Please describe your problem here..." style="display:none;"></textarea>
+<input type="checkbox" id = "descCheck" name="p7" value="64" />Others<br>
+<textarea id = "descBox" name = "descBox" rows = "3" cols = "25" PLACEHOLDER="Please describe your problem here..." ></textarea>
 </td>
 </tr>
 

@@ -15,7 +15,6 @@ else
 <head>
 <title>NIT Trichy</title>
 <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
-<link rel="stylesheet" href="bootstrap-theme.min.css">
 </head>
 <body>
 <div id="header">

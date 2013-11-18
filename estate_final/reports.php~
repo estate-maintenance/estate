@@ -1,8 +1,8 @@
+
 <?php
 require_once('functions.php');
 secure(2);
 require_once('conn.php');
-
 if($_SESSION['type']==1)
 header("Location: index.php");
 if($_SESSION['type']==4)
@@ -10,6 +10,7 @@ header("Location: login.php");
 if($_SESSION['type']==3)
 header("Location: reports_final.php");
 ?>
+
 <?php
 $i=0;
 $_GET['page']=0;
@@ -46,73 +47,150 @@ $_GET['page']=0;
 			{
 				if(isset($_POST[$arr[$i]]))
 				{//changes here	
-					$sql="Select id,name,designation,department,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,availablefrom,availableto,contact from complaints where id=".$arr[$i]."";
+					$sql="Select username,id,name,designation,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,timing,descText,contact from complaints where id=".$arr[$i]."";
 					$result=mysql_query($sql,$conn);
 				}
 			}
 			$row=mysql_fetch_array($result);
-			echo '<form>';
-			echo '<img style = "margin-top: -25px; margin-left:250px;" src="images/nitt_banner1.jpg" alt="Logo"/>';		
-			echo "<center><h4>DEPARTMENT OF ESTATE MAINTENANCE</h4></center>";
-			echo "<u style='font-size:15px; font-weight: bold; margin-left:575px;'>COMPLAINT FORM</u>";
+			?>
+			<form>
+			<!--<img style = "margin-top: -25px; margin-left:120px;" src="images/nitt_banner1.jpg" alt="Logo"/>		
+			<center><h4>DEPARTMENT OF ESTATE MAINTENANCE</h4></center>
+			<u style='font-size:15px; font-weight: bold; margin-left:475px;'>COMPLAINT FORM</u>-->
+                     <u style='font-size:14px; font-weight: bold; margin-left:300px;'>DEPT OF ESTATE MAINTENANCECOMPLAINT FORM</u>
+
+			<?php
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;";
-echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-				echo '<input type="button" value="Print" onClick="window.print()">';
-				echo '&nbsp<input type="button" value="Back" onClick="history.back(1);"></center></h4>';
-			echo "<table align = 'center' style='margin-left:170px; text-align:center;' border = '1'>";
-			echo "<tr><th>Name</th><th>Designation</th><th>Department</th><th>Hostel & Room No.</th><th>Street & Quarters No.</th><th>Available Time(09.30 a.m. to 05.30 p.m)</th></tr>";
-			echo "<tr><td>" . $row['name'] . "</td><td>" . $row['designation'] . "</td><td>" . $row['department'] . "</td><td>" . $row['location'] . "</td><td>" .  $row['room']. "</td><td>" . $row['availablefrom'] . " - " . $row['availableto'] . "</td></tr>";
-			echo "<tr><td><b>Nature of complaint</b></td><td colspan = '5'>";if($row['description']==1) {echo "Fan is not working";} else if($row['description']==2) {echo"Tubelight is not working";} 
-			else if($row['description']==4){ echo"Switch is not working";}else if($row['description']==8) {echo"Plug Point is not working";} else if($row['description']==16) {echo"Street Light is not working";}
-			else if($row['description']==3){ echo"Fan, TubeLight is not working";} else if($row['description']==5) {echo"Fan, Switch is not working";} else if($row['description']==9) {echo"Fan, Plug Point is not working";}
-			else if($row['description']==17) {echo" Fan, Street Light is not working";}else if($row['description']==6) {echo"TubeLight, Switch is not working";}
-			else if($row['description']==10) {echo"Tube Light, PlugPoint is not working";} else if($row['description']==18) {echo" TubeLight, Street Light is not working";}
-			else if($row['description']==12) {echo"Switch, Plug Point is not working";} else if($row['description']==20) {echo"Switch, Street Light is not working";}
-			else if($row['description']==24) {echo"Plug Point, Street Light is not working";} else if($row['description']==7) {echo"Fan, TubeLight, Switch is not working";}
-			else if($row['description']==11) {echo"Fan, TubeLight, PlugPoint is not working";} else if($row['description']==19) {echo"Fan, TubeLight, Street Light is not working";}
-			else if($row['description']==15) {echo"Fan, TubeLight, Switch, PlugPoint is not working";} else if($row['description']==23) {echo"Fan, TubeLight, Switch, Street Light is not working";} 
-			else if($row['description']==31) {echo"Fan, TubeLight, Switch, PlugPoint, Street Light is not working";} "</td></tr>";
-			echo "<tr><td><b>Contact Number (Optional)</b></td><td colspan = '5'>" . $row['contactNumber'] . "</td></tr>";
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";?>
+				<input type="button" id="btnPrint" onclick="window.print();" value="Print" />
+				<?php
+				echo '&nbsp' ?>
+				<input type="button" id="btnBack" value="Back" onClick="history.back(1);"></center></h4>
+				<br /><br />
+				<table  style='margin-left:30px; text-align:center;' border = '1'>
+				<tr><th>Complaint No</th><th>Name</th><th>Designation</th><th>Hostel & Room No.</th><th>Street & Quarters No.</th><th>Available Time(09.30 a.m. to 05.30 p.m)</th></tr>
+			<?php 
+                         $ref="EL".str_pad($row[id],5,"0",STR_PAD_LEFT);
+                     echo "<tr><td>$ref</td><td>" . $row['name'] . "</td><td>" . $row['designation'] . "</td><td>" . $row['location'] . "- ". $row['room'] ."</td><td>" .  $row['room']. "</td></tr>";
+                     echo "<tr><td><b>Nature of complaint</b></td><td colspan = '5'>";if($row['description']==1) {echo "Fan is not working. ".$row['descText'];} else if($row['description']==2) {echo"Tubelight is not working. ".$row['descText'];} 
+			else if($row['description']==4){ echo"Switch is not working. ".$row['descText'];}else if($row['description']==8) {echo"Plug Point is not working. ".$row['descText'];} else if($row['description']==16) {echo"Street Light is not working. ".$row['descText'];}else if($row['description']==32) {echo"Power Failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==3){ echo"Fan, TubeLight is not working. ".$row['descText'];} else if($row['description']==5) {echo"Fan, Switch is not working. ".$row['descText'];} else if($row['description']==9) {echo"Fan, Plug Point is not working. ".$row['descText'];}
+			else if($row['description']==17) {echo" Fan, Street Light is not working. ".$row['descText'];}else if($row['description']==33) {echo" Fan is not working,power failure(fuse) problem. ".$row['descText'];}else if($row['description']==6) {echo"TubeLight, Switch is not working. ".$row['descText'];}
+			else if($row['description']==10) {echo"Tube Light, PlugPoint is not working. ".$row['descText'];} else if($row['description']==18) {echo" TubeLight, Street Light is not working. ".$row['descText'];}else if($row['description']==34) {echo" TubeLight is not working, power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==12) {echo"Switch, Plug Point is not working. ".$row['descText'];} else if($row['description']==20) {echo"Switch, Street Light is not working. ".$row['descText'];}else if($row['description']==36) {echo"Switch is not working, power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==24) {echo"Plug Point, Street Light is not working. ".$row['descText'];}else if($row['description']==40) {echo"Plug Point is not working,power failure(fuse) problem. ".$row['descText'];}else if($row['description']==48) {echo"Street Light is not working,power failure(fuse) problem. ".$row['descText'];} 
+			else if($row['description']==7) {echo"Fan, TubeLight, Switch is not working. ".$row['descText'];}else if($row['description']==11) {echo"Fan, TubeLight, PlugPoint is not working. ".$row['descText'];} else if($row['description']==19) {echo"Fan, TubeLight, Street Light is not working. ".$row['descText'];} else if($row['description']==35) {echo"Fan, TubeLight is not working & power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==14) {echo"Switch, TubeLight, PlugPoint is not working. ".$row['descText'];}else if($row['description']==22) {echo"TubeLight,Switch,Street Light is not working. ".$row['descText'];}else if($row['description']==38) {echo"TubeLight,Switch is not working & power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==28) {echo"Switch,PlugPoint,Street Light is not working. ".$row['descText'];}else if($row['description']==44) {echo"Switch,PlugPoint is not working & power failure(fuse) problem. ".$row['descText'];}else if($row['description']==56) {echo"Streetlight,PlugPoint is not working & power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==15) {echo"Fan, TubeLight, Switch, PlugPoint is not working. ".$row['descText'];} else if($row['description']==23) {echo"Fan, TubeLight, Switch, Street Light is not working. ".$row['descText'];}else if($row['description']==39) {echo"Fan, TubeLight, Switch is not working & power failure(fuse) problem. ".$row['descText'];} 
+			else if($row['description']==30){echo"TubeLight, Switch, Plugpoint,Street Light is not working. ".$row['descText'];} else if($row['description']==46){echo"TubeLight, Switch, Plugpoint is not working & power failure(fuse) problem. ".$row['descText'];} 
+			else if($row['description']==60) {echo" Switch, PlugPoint, Street Light is not working 7 power failure(fuse) problem. ".$row['descText'];}else if($row['description']==31) {echo"Fan, TubeLight, Switch, PlugPoint, Street Light is not working. ".$row['descText'];}else if($row['description']==62) {echo"TubeLight, Switch, PlugPoint, Street Light is not working & power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==63) {echo"fan, TubeLight, Switch, PlugPoint, Street Light is not working & power failure(fuse) problem. ".$row['descText'];}
+			else if($row['description']==64) {echo $row['descText'];}
+			else if($row['description']==65) {echo"Fan is not working. ".$row['descText'];}
+			else if($row['description']==66) {echo"TubeLight is not working. ".$row['descText'];}
+			else if($row['description']==68) {echo"Switch is not working. ".$row['descText'];}
+			else if($row['description']==72) {echo"PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==80) {echo"StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==96) {echo"Power Failure. ".$row['descText'];}
+			else if($row['description']==67) {echo"Fan, TubeLight is not working. ".$row['descText'];}
+			else if($row['description']==69) {echo"Fan, Switch is not working. ".$row['descText'];}
+			else if($row['description']==73) {echo"Fan, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==81) {echo"Fan, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==97) {echo"Fan is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==70) {echo"TubeLight, Switch is not working. ".$row['descText'];}
+			else if($row['description']==74) {echo"TubeLight, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==82) {echo"TubeLight, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==98) {echo"TubeLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==76) {echo"Switch, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==84) {echo"Switch, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==100) {echo"Switch is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==88) {echo"PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==104) {echo"PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==112) {echo"StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==71) {echo"Fan, TubeLight, Switch is not working. ".$row['descText'];}
+			else if($row['description']==75) {echo"Fan, TubeLight, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==83) {echo"Fan, TubeLight, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==99) {echo"Fan, TubeLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==78) {echo"TubeLight, Switch, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==86) {echo"TubeLight, Switch, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==102) {echo"TubeLight, Switch is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==92) {echo"Switch, PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==108) {echo"Switch, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==120) {echo"PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==77) {echo"Fan, Switch, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==85) {echo"Fan, Switch, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==101) {echo"Fan, Switch is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==89) {echo"Fan, PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==105) {echo"Fan, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==113) {echo"Fan, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==90) {echo"TubeLight, PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==106) {echo"TubeLight, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==114) {echo"TubeLight, StreetLight is not working. Power Failure".$row['descText'];}
+			else if($row['description']==116) {echo"Switch, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==79) {echo"Fan, TubeLight, Switch, PlugPoint is not working. ".$row['descText'];}
+			else if($row['description']==87) {echo"Fan, TubeLight, Switch, Street Light is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==103) {echo"Fan, TubeLight, Switch is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==93) {echo"Fan, Switch, PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==109) {echo"Fan, Switch, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==121) {echo"Fan, PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==94) {echo"TubeLight, Switch, PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==110) {echo"TubeLight, Switch, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==122) {echo"TubeLight, PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==124) {echo"Switch, PlugPoint, StreeLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==95) {echo"Fan, TubeLight, Switch, PlugPoint, StreetLight is not working. ".$row['descText'];}
+			else if($row['description']==111) {echo"Fan, TubeLight, Switch, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==126) {echo"TubeLight, Switch, PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==127) {echo"Fan, TubeLight, Switch, PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==91) {echo"Fan, TubeLight, PlugPoint is not working".$row['descText'];}
+			else if($row['description']==107) {echo"Fan, TubeLight, PlugPoint is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==115) {echo"Fan, TubeLight, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==117) {echo"Fan, Switch, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==118) {echo"TubeLight, Switch, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==119) {echo"Fan, TubeLight, Switch, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==123) {echo"Fan, TubeLight, PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			else if($row['description']==125) {echo"Fan, Switch, PlugPoint, StreetLight is not working. Power Failure. ".$row['descText'];}
+			"</td></tr>";
+			
+			
+			echo "<tr><td><b>Contact Number</b></td><td colspan = '5'>" . $row['contact'] . "</td></tr>";
+                     echo "<tr><td><b>Email-ID</b></td><td colspan = '5'>". $row['username'] ."@nitt.edu</td></tr>";
 			echo "</table>";
-				echo "<br ><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+				echo "<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Date: _____________</b>";
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>SIGNATURE: </b>__________________";
+echo "&nbsp;&nbsp;";
+echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>SIGNATURE: </b>__________________";
 echo "<br /><br />";
 echo "<div style = 'width: 100%';>";
 echo "<div style = 'float:left; width: 500px;'>";
-echo "<table border = '1' style = 'margin-left: 170px; text-align:center;'>";
-echo "<tr><td colspan = '2'><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOR OFFICE USE ONLY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td></tr>";
-echo "<tr><td style='text-align:left; width: 85px';><b>Indent No.</b></td><td>&nbsp;</td></tr>";
+echo "<table border = '1' style = 'margin-left: 30px; text-align:center;'>";
+echo "<tr><td colspan = '2'><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FOR OFFICE USE ONLY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td></tr>";
+echo "<tr><td style='text-align:left; width: 85px';><b>Indent No.</b></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
 echo "<tr><td style='text-align:left';><b>Material Details</b></td><td>&nbsp;</td></tr>";
 echo "<tr><td style='text-align:left';><b>Used</b></td><td>&nbsp;</td></tr>";
 echo "<tr><td style='text-align:left';><b>Returned</b></td><td>&nbsp;</td></tr>";
 echo "</table>";
 echo "</div>";
 echo "<div>";
-echo "<table border = '1;' style = 'margin-left: 920px; text-align:center;'>";
-echo "<tr><td colspan = '2'><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACKNOWLEDGEMENT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td></tr>";
-echo "<tr><td style='width:100px;'><b>Name</b></td><td><b>Signature with date</b></td></tr>";
+echo "<table border = '1;' style = 'margin-left: 600px; text-align:center;'>";
+echo "<tr><td colspan = '2'><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACKNOWLEDGEMENT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td></tr>";
+echo "<tr><td style='width:190px;'><b>Name</b></td><td><b>Signature with date</b></td></tr>";
 echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
 echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
 echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
 echo "</table>";
 echo "</div>";
 echo "</div>";
-echo "<p style='margin-top: 50px; margin-left:350px;'><b>SIGNATURE OF ATTENDANT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STORES IN - CHARGE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSISTANT ENGINEER</b></p>";
-			echo '</form>';
-			exit();
+echo "<p style='margin-top: 50px; margin-left:215px;'><b>SIGNATURE OF ATTENDANT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STORES IN - CHARGE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSISTANT ENGINEER</b></p>";
+			echo '</form>';			exit();
 		}
 
 		if(1)//(isset($_POST['Submit']))
 		{
-			$sql="Select id,name,designation,department,location,description,processed,area,time, contactPerson, contactNumber, room,availablefrom,availableto,contact from complaints ";
+			$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber, room,timing,descText,contact from complaints ";
 			$status="and";
 			$sql.="where ( 1=1 ";
 
@@ -126,6 +204,14 @@ echo "<p style='margin-top: 50px; margin-left:350px;'><b>SIGNATURE OF ATTENDANT&
 			}
 			if(isset($_POST['process3']))
 			{	if($status=="and")
+			    $status.=" processed=2";
+				else
+				$status.=" or processed=2";
+				if($status=="and")
+			    $status.=" processed=1";
+				else
+				$status.=" or processed=1";
+				if($status=="and")
 			    $status.=" processed=0";
 				else
 				$status.=" or processed=0";
@@ -177,7 +263,7 @@ echo "<p style='margin-top: 50px; margin-left:350px;'><b>SIGNATURE OF ATTENDANT&
 
 		}
 		else
-		$sql="Select id,name,designation,department,location,description,processed,area,time, contactPerson, contactNumber, room,timing,availablefrom,availableto,contact from complaints order by processed ASC";
+		$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber, room,timing,descText,contact from complaints order by processed ASC";
 //limit ".($page*$itemsperpage).",$itemsperpage
 		$result=mysql_query($sql,$conn);
 
@@ -185,9 +271,9 @@ echo "<p style='margin-top: 50px; margin-left:350px;'><b>SIGNATURE OF ATTENDANT&
 
 <script>
 
-function myDesc(dVal)
+function myDesc(dVal,descText)
 {
-	var k=0,j=0
+	var k=0,j=0,j1=0;
 	var str=""
 	while(dVal>0){
 		while(Math.pow(2,k)<=dVal){
@@ -198,13 +284,18 @@ function myDesc(dVal)
 		{
 			case 1:str+="Fan is not working.<br/>"; break;
 			case 2:str+="Tubelight is not working.<br/>"; break;
-			case 4:str+="Switch ont working.<br/>"; break;
+			case 4:str+="Switch is not working.<br/>"; break;
 			case 8:str+="Plug point is not working.<br/>"; break;
 			case 16:str+="Street Light is not working.<br/>"; break;
+			case 32:str+="Power Failure(fuse) problem.<br/>";break;
+			case 64:str+="Others : "+descText+"<br/>";j1=1;break;
+			
 		}
 		dVal-=j;
 		k=0;
 	}
+	if((descText!="")&&(j1!=1))
+	str+="-"+descText;
 	return document.getElementById("descdiv").innerHTML=str
 
 }
@@ -220,9 +311,9 @@ function myTime(dVal)
 		switch(j)
 		{
 			case 1:str+="weekday 12noon to 1 pm.<br/>"; break;
-			case 2:str+="weekday 4pm to 6 pm.<br/>"; break;
+			case 2:str+="weekday 3pm to 5:30 pm.<br/>"; break;
 			case 4:str+="saturday 9am to 5pm.<br/>"; break;
-
+			case 8:str+="Anytime. <br/>";break;
 		}
 		dVal-=j;
 		k=0;
@@ -232,12 +323,12 @@ function myTime(dVal)
 }
 
 
-function rowover(id,str,timing,contact)
+function rowover(id,str,timing,contact,descText)
 {
 	id.style.background='#9ec630'; id.style.cursor='pointer';
 	document.getElementById("optiondiv").style.display='none'
-	document.getElementById("descdiv").innerHTML="<h2>Description : </h2>" + myDesc(document.getElementById("desc"+str).value)
-	document.getElementById("descdiv").innerHTML+="<h4>Availablity Time : </h4>" + myTime(timing)
+	document.getElementById("descdiv").innerHTML="<h2>Description : </h2>" + myDesc(document.getElementById("desc"+str).value,descText)
+	document.getElementById("descdiv").innerHTML+="<h4>Availablity Time : </h4>" + myTime(document.getElementById("tm"+str).value)
 	if(contact!='')
 	document.getElementById("descdiv").innerHTML+="<h4>Contact Number : </h4>" + contact
 	document.getElementById("descdiv").style.display='block'
@@ -346,7 +437,6 @@ if(f.inchargeContact.value=="" || !numReg.test(f.inchargeContact.value) || f.inc
 
 }
 
-
 function validate()
 {
 var f=document.form1
@@ -355,7 +445,21 @@ return true
 }
 
 </script>
-<?php require_once('header.php') ?>
+<?php require_once('header.php');  ?>
+<?php require_once('footer.php') ?>
+ <?php
+ /* changes to accomodate date filter */
+if(isset($_SESSION['fromdate']))
+    unset($_SESSION['fromdate']);
+if(isset($_SESSION['todate']))
+    unset($_SESSION['todate']);
+if(isset($_POST['datesubmit']))
+            {
+
+                $_SESSION['fromdate']=$_POST['fromdate'];
+                 $_SESSION['todate']=$_POST['todate'];
+            }
+?>
 <div id="menu" >
   <ul id="nav1">
   <?php 
@@ -366,6 +470,25 @@ echo'<a href="dispatched.php"><center>Dispatched</center></a><a href="unprocesse
    </ul>
  </div>
  <div id="content">
+     <!--  Date wise search form starts- Vikas meghwani   -->
+     <div id="content">
+
+         <form name="date" method="post">
+             <table width="30%" align="center" border="0" cellpadding="5" cellspacing="5">
+<tr align="center">
+<td width="39%" align="right">From: </td>
+<td id="userTbox" width="25%" align="left"><input type="date" name="fromdate" size="26" value="<?php if(isset($_SESSION['fromdate'])){echo $_SESSION['fromdate']; unset($_SESSION['fromdate']); }   ?>" /></td>
+<td width="39%" align="right">To: </td>
+<td id="userTbox" width="25%" align="left"><input type="date" name="todate" size="26"  value="<?php if(isset($_SESSION['todate'])){echo $_SESSION['todate']; unset($_SESSION['todate']); }   ?>"/></td>
+</tr>
+<tr><td colspan="4" align="center"><input type="submit" name="datesubmit" value="SHOW"/></td>
+</tr>
+             </table>
+
+         </form>
+     </div>
+<!--  Date wise search form ends   -->
+
  <?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?>
 
 <form name="form1" method="post" onsubmit="return validate()">
@@ -376,7 +499,6 @@ echo'<a href="dispatched.php"><center>Dispatched</center></a><a href="unprocesse
 <th>Compl.No</th>
 <th>Name</th>
 <th>Designation</th>
-<th>Department</th>
 <th>Location</th>
 <th>Room/Quarter No</th>
 <th>Status</th>
@@ -386,16 +508,41 @@ echo'<a href="dispatched.php"><center>Dispatched</center></a><a href="unprocesse
 </tr>
 <?php
 	$i = 0;
-	while($row=mysql_fetch_array($result))
+	
+        while($row=mysql_fetch_array($result))
 	{			
 		if(!isset($ids))
-			$ids = 0;		
+			$ids = 0;
+
+                /*searching in a particular period  */
+                if(isset($_POST['datesubmit']))
+            {
+
+                $from=$_POST['fromdate'];
+                $to=$_POST['todate'];
+                $f=strtotime($from);
+                $t=strtotime($to);
+
+                  if($f==$t)
+                    $t=$f+86400;
+                 
+                $timestamp = strtotime($row['time']);
+
+
+            if($timestamp <$f or $timestamp>$t)
+                {
+                $i++;
+                continue;
+            }
+            }
+            /*searching code ends */
+
+
 ?>
-<tr <?php if($i%2) { ?> style="background:#CCCCCC" <?php } else { ?> <?php }?> onmouseover="rowover(this,'<?php echo $i ?>','<?php echo $row['time']?>','<?php echo $row['contact']?>')" onmouseout="rowout(this,'<?php if($i%2) echo '#CCCCCC'; else echo '#e6e6e6'; ?>','<?php echo $row['id'] ?>')" <?php if($row['processed']!='2') {?>onclick="rowclick(this,'<?php echo $row['id']?>')"<?php } ?>>
+<tr <?php if($i%2) { ?> style="background:#CCCCCC" <?php } else { ?> <?php }?> onmouseover="rowover(this,'<?php echo $i ?>','<?php echo $row['time']?>','<?php echo $row['contact']?>','<?php echo $row['descText']?>')" onmouseout="rowout(this,'<?php if($i%2) echo '#CCCCCC'; else echo '#e6e6e6'; ?>','<?php echo $row['id'] ?>')" <?php if($row['processed']!='2') {?>onclick="rowclick(this,'<?php echo $row['id']?>')"<?php } ?>>
 <td align="center"><?php echo "EL".str_pad($row['id'],6,"0",STR_PAD_LEFT) ?></td>
-<td align="center"><?php echo $row['name'] ?></td>
+<td align="center"><?php echo $row['name']; ?></td>
 <td align="center"><?php echo $row['designation'] ?></td>
-<td align="center"><?php echo $row['department'] ?></td>
 <td align="center"><?php echo $row['location'] ?></td>
 <td align="center"><?php echo $row['room'] ?></td>
 <input type = "hidden" id = "toPrint<?php echo $row['id'];?>" value="<?php echo $row['processed']; ?>">
@@ -416,6 +563,7 @@ $src2="images/dispatched.png";
 <input type="checkbox" name="<?php echo $row['id'] ?>" id="ID<?php echo $row['id']?>" style="display:none"/>
 </tr>
 <input type="hidden" value="<?php echo $row['description']?>" id="desc<?php echo $i ?>" />
+<input type="hidden" value="<?php echo $row['timing']?>" id="tm<?php echo $i ?>" />
 <?php
 if ($i == 0)
 $ids = $row['id']. ",";
@@ -455,7 +603,7 @@ Technician Allotted:<?php echo '&nbsp';?><select name="inchargeName" id='incharg
 <div class="box" id="descdiv" style="display:none; position:fixed;right:20px;min-width:180px;"></div>
 
 </div>
-<?php require_once('footer.php') ?>
+
 </div>
 
 </form>

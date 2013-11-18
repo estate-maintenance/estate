@@ -15,7 +15,7 @@ $_GET['page']=0;
 		else
 		$page=0;
 		$itemsperpage=10;
-		$sql="Select Count(*) from complaints";
+		$sql="Select Count(*) from elcomplaints";
 		$result=mysql_query($sql,$conn);
 		if($result and mysql_num_rows($result)>0)
 		{
@@ -32,7 +32,7 @@ $_GET['page']=0;
 				if(isset($_POST[$arr[$i]]))
 				{	//changes here							
 
-					mysql_query("Update complaints set processed=1,dispatchedTime=now(),contactPerson='" . $_POST['inchargeName'] . "', contactNumber=" . $_POST['inchargeContact'] . ", dispatchedTime = '" .$time . "' where processed<2 and id=".$arr[$i]);
+					mysql_query("Update elcomplaints set processed=1,dispatchedTime=now(),contactPerson='" . $_POST['inchargeName'] . "', contactNumber=" . $_POST['inchargeContact'] . ", dispatchedTime = '" .$time . "' where processed<2 and id=".$arr[$i]);
 				}			
 			}
 			/*exit();*/
@@ -44,7 +44,7 @@ $_GET['page']=0;
 			{
 				if(isset($_POST[$arr[$i]]))
 				{//changes here	
-					$sql="Select id,name,designation,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,timing,descText,contact from complaints where id=".$arr[$i]."";
+					$sql="Select id,name,designation,location,description,processed,area,time,dispatchedTime,timedesc, contactPerson, contactNumber, room,timing,descText,contact from elcomplaints where id=".$arr[$i]."";
 					$result=mysql_query($sql,$conn);
 				}
 			}
@@ -115,7 +115,7 @@ echo "<p style='margin-top: 50px; margin-left:350px;'><b>SIGNATURE OF ATTENDANT&
 
 		if(1)
 		{
-			$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber, room,timing,descText,contact from complaints ";
+			$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber,timedesc, room,timing,descText,contact from elcomplaints ";
 			$status="and";
 			$sql.="where ( 1=1 ";
 			$status.=" processed=0";
@@ -164,7 +164,7 @@ if(isset($_POST['nm']))
 
 		}
 		else
-		$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber, room,timing,descText,contact from complaints where processed=0";
+		$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber,timedesc, room,timing,descText,contact from elcomplaints where processed=0";
 //limit ".($page*$itemsperpage).",$itemsperpage
 		$result=mysql_query($sql,$conn);
 
@@ -200,26 +200,24 @@ function myDesc(dVal,descText)
 		}
 		switch(j)
 		{
-			case 1:str+="Fan is not working.<br/>"; break;
-			case 2:str+="Tubelight is not working.<br/>"; break;
-			case 4:str+="Switch is not working.<br/>"; break;
-			case 8:str+="Plug point is not working.<br/>"; break;
-			case 16:str+="Street Light is not working.<br/>"; break;
-			case 32:str+="Power Failure(fuse)problem<br/>";break;
-			case 64:str+="Others : "+descText+"<br/>";j1=1;break;
+			case 1:str+="Fan is not working.<br>"; break;
+			case 2:str+="Tubelight is not working.<br>"; break;
+			case 4:str+="Switch is not working.<br>"; break;
+			case 8:str+="Plug point is not working.<br>"; break;
+			case 16:str+="Street Light is not working.<br>"; break;
+			case 32:str+="Power Failure(fuse)problem<br>";break;
+			case 64:str+="Others : "+descText+"<br>";j1=1;break;
 			
 					}
 		dVal-=j;
-		k=0;
-	}
+		k=0;}
 	if((descText!="")&&(j1!=1))
 	str+="-"+descText;
 	return document.getElementById("descdiv").innerHTML=str
-
 }
-function myTime(dVal)
+function myTime(dVal,timedesc)
 {
-	var k=0,j=0
+	var k=0,j=0,j1=0;
 	var str=""
 	while(dVal>0){
 		while(Math.pow(2,k)<=dVal){
@@ -228,26 +226,26 @@ function myTime(dVal)
 		}
 		switch(j)
 		{
-			case 1:str+="Noon 12pm to 1 pm.<br/>"; break;
-			case 2:str+="Evening 3pm to 5.30 pm.<br/>"; break;
+			case 1:str+="weekday 12noon to 1 pm.<br/>"; break;
+			case 2:str+="weekday 3pm to 5:30 pm.<br/>"; break;
 			case 4:str+="saturday 9am to 5pm.<br/>"; break;
-			case 8:str+="Anytime.<br/>"; break;			
+                       case 8:str+="Others : "+timedesc+"<br/>";j1=1;break;
 		}
 		dVal-=j;
 		k=0;
 	}
+         if((timedesc!="")&&(j1!=1))
+        str+="-"+timedesc;
 	return document.getElementById("descdiv").innerHTML=str;
-
 
 }
 
-
-function rowover(id,str,timing,contact,descText)
+function rowover(id,str,timing,contact,descText,timedesc)
 {
 	id.style.background='#9ec630'; id.style.cursor='pointer';
 	document.getElementById("optiondiv").style.display='none'
 	document.getElementById("descdiv").innerHTML="<h2>Description : </h2>" + myDesc(document.getElementById("desc"+str).value,descText)
-	document.getElementById("descdiv").innerHTML+="<h4>Availablity Time : </h4>" +myTime(document.getElementById("tm"+str).value)
+	document.getElementById("descdiv").innerHTML+="<h4>Availablity Time : </h4>" +myTime(document.getElementById("tm"+str).value,timedesc)
 	if(contact!='')
 	document.getElementById("descdiv").innerHTML+="<h4>Contact Number : </h4>" + contact
 	document.getElementById("descdiv").style.display='block'
@@ -386,7 +384,7 @@ if(isset($_POST['datesubmit']))
 <div id="menu" >
   <ul id="nav1">
   <?php echo '<a href="elreports.php"><center>Reports</center></a>';
-  echo '<a href="completed.php"><center>Completed</center></a><a href="dispatched.php"><center>Dispatched</center></a><a href="unprocessed.php"><center><font color=red>Unprocessed</font></center></a>';  
+  echo '<a href="elcompleted.php"><center>Completed</center></a><a href="eldispatched.php"><center>Dispatched</center></a><a href="elunprocessed.php"><center><font color=red>Unprocessed</font></center></a>';  
     echo '';
    ?>
    </ul>
@@ -467,7 +465,7 @@ if(isset($_POST['datesubmit']))
             /*searching code ends */
 
 ?>
-<tr <?php if($i%2) { ?> style="background:#CCCCCC" <?php } else { ?> <?php }?> onmouseover="rowover(this,'<?php echo $i ?>','<?php echo $row['time']?>','<?php echo $row['contact']?>','<?php echo $row['descText']?>')" onmouseout="rowout(this,'<?php if($i%2) echo '#CCCCCC'; else echo '#e6e6e6'; ?>','<?php echo $row['id'] ?>')" <?php if($row['processed']!='2') {?>onclick="rowclick(this,'<?php echo $row['id']?>')"<?php } ?>>
+<tr <?php if($i%2) { ?> style="background:#CCCCCC" <?php } else { ?> <?php }?> onmouseover="rowover(this,'<?php echo $i ?>','<?php echo $row['time']?>','<?php echo $row['contact']?>','<?php echo $row['descText']?>','<?php echo $row['timedesc']?>')" onmouseout="rowout(this,'<?php if($i%2) echo '#CCCCCC'; else echo '#e6e6e6'; ?>','<?php echo $row['id'] ?>')" <?php if($row['processed']!='2') {?>onclick="rowclick(this,'<?php echo $row['id']?>')"<?php } ?>>
 <td align="center"><?php echo "EL".str_pad($row['id'],6,"0",STR_PAD_LEFT) ?></td>
 <td align="center"><?php echo $row['name'] ?></td>
 <td align="center"><?php echo $row['designation'] ?></td>
@@ -505,7 +503,7 @@ $i++;
 
 
 <div  class="box" id="left1">
-<div id = "incharge" style="margin-left:8px;"><br />
+<div id = "incharge" style="margin-left:8px;">
 <!--
 Technician Allotted:<?php echo '&nbsp';?><select name="inchargeName" id='inchargeName' value="options" disabled="true">
 <option value="0">Select</option>
@@ -516,8 +514,7 @@ Technician Allotted:<?php echo '&nbsp';?><select name="inchargeName" id='incharg
 </SELECT>
 //changes here
 -->
-
-<br /><br />Technician:<?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?><input disabled = "true" type = 'text' id = 'inchargeName' name = 'inchargeName' />
+Technician:<?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?><input disabled = "true" type = 'text' id = 'inchargeName' name = 'inchargeName' />
 <br /><br />Contact:<?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?><input disabled = "true" type = 'text' id = 'inchargeContact' name = 'inchargeContact' />
 <br /><br />
 </div>

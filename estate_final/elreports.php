@@ -1,9 +1,15 @@
-
 <?php
 require_once('functions.php');
 secure(2);
 require_once('conn.php');
+if($_SESSION['type']==1)
+header("Location: index.php");
+if($_SESSION['type']==4)
+header("Location: login.php");
+if($_SESSION['type']==3)
+header("Location: reports_final.php");
 ?>
+
 <?php
 $i=0;
 $_GET['page']=0;
@@ -12,7 +18,7 @@ $_GET['page']=0;
 		else
 		$page=0;
 		$itemsperpage=10;
-		$sql="Select Count(*) from complaints";
+		$sql="Select Count(*) from elcomplaints";
 		$result=mysql_query($sql,$conn);
 		if($result and mysql_num_rows($result)>0)
 		{
@@ -28,9 +34,9 @@ $_GET['page']=0;
 			{					
 				if(isset($_POST[$arr[$i]]))
 				{								//changes here	
-					mysql_query("Update complaints set processed=1,dispatchedTime=now(),contactPerson='" . $_POST['inchargeName'] . "', contactNumber=" . $_POST['inchargeContact'] . " where processed<2 and id=".$arr[$i]);
+					mysql_query("Update elcomplaints set processed=1,dispatchedTime=now(),contactPerson='" . $_POST['inchargeName'] . "', contactNumber=" . $_POST['inchargeContact'] . " where processed<2 and id=".$arr[$i]);
 				}			
-			}			
+			}
 			/*exit();*/
 		}		
 		if(isset($_POST['print']))
@@ -40,44 +46,33 @@ $_GET['page']=0;
 			{
 				if(isset($_POST[$arr[$i]]))
 				{//changes here	
-					$sql="Select username,id,name,designation,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,timing,descText,contact from complaints where id=".$arr[$i]."";
+					$sql="Select username,id,name,designation,location,description,processed,area,time,dispatchedTime,timedesc, contactPerson, contactNumber,timedesc, room,timing,descText,contact from elcomplaints where id=".$arr[$i]."";
 					$result=mysql_query($sql,$conn);
 				}
 			}
 			$row=mysql_fetch_array($result);
-			echo '<form>';
-			//echo '<img style = "margin-top: -25px; margin-left:120px;" src="images/nitt_banner1.jpg" alt="Logo"/>';		
-			//echo "<center><h4>DEPARTMENT OF ESTATE MAINTENANCE</h4></center>";
-			echo "<u style='font-size:14px; font-weight: bold; margin-left:300px;'>DEPT OF ESTATE MAINTENANCECOMPLAINT FORM</u>";
- //echo "<center><h3>DEPARTMENT OF ESTATE MAINTENANCE COMPLAINT FORM</h3></center>";
-                     //echo "<u style='font-size:14px; font-weight: bold;margin-top: -25px; margin-left:120px;'>DEPARTMENT OF ESTATE MAINTENANCE COMPLAINT FORM</u>";
-                     
+			?>
+			<form>
+			<!--<img style = "margin-top: -25px; margin-left:120px;" src="images/nitt_banner1.jpg" alt="Logo"/>		
+			<center><h4>DEPARTMENT OF ESTATE MAINTENANCE</h4></center>
+			<u style='font-size:15px; font-weight: bold; margin-left:475px;'>COMPLAINT FORM</u>-->
+                     <u style='font-size:14px; font-weight: bold; margin-left:300px;'>DEPT OF ESTATE MAINTENANCECOMPLAINT FORM</u>
+
+			<?php
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;";
 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";?>
-
-				<style type="text/css">
-@media print {
-input#btnPrint {
-display: none;
-}
-input#btnBack {
-display: none;
-}
-}
-</style> 
-				<input type="button" id="btnPrint" onclick="window.print();" value="Print Page" />
+				<input type="button" id="btnPrint" onclick="window.print();" value="Print" />
 				<?php
 				echo '&nbsp' ?>
 				<input type="button" id="btnBack" value="Back" onClick="history.back(1);"></center></h4>
 				<br /><br />
 				<table  style='margin-left:30px; text-align:center;' border = '1'>
 				<tr><th>Complaint No</th><th>Name</th><th>Designation</th><th>Hostel & Room No.</th><th>Street & Quarters No.</th><th>Available Time(09.30 a.m. to 05.30 p.m)</th></tr>
-				<?php
-                      $ref="EL".str_pad($row[id],5,"0",STR_PAD_LEFT);
-
-			echo "<tr><td>$ref</td><td>" . $row['name'] . "</td><td>" . $row['designation'] . "</td><td>" . $row['location'] . "- ". $row['room'] ."</td><td>" .  $row['room']. "</td></tr>";
-			echo "<tr><td><b>Nature of complaint</b></td><td colspan = '5'>";if($row['description']==1) {echo "Fan is not working. ".$row['descText'];} else if($row['description']==2) {echo"Tubelight is not working. ".$row['descText'];} 
+			<?php 
+                         $ref="EL".str_pad($row[id],5,"0",STR_PAD_LEFT);
+                     echo "<tr><td>$ref</td><td>" . $row['name'] . "</td><td>" . $row['designation'] . "</td><td>" . $row['location'] . "- ". $row['room'] ."</td><td>" .  $row['room']. "</td></tr>";
+                     echo "<tr><td><b>Nature of complaint</b></td><td colspan = '5'>";if($row['description']==1) {echo "Fan is not working. ".$row['descText'];} else if($row['description']==2) {echo"Tubelight is not working. ".$row['descText'];} 
 			else if($row['description']==4){ echo"Switch is not working. ".$row['descText'];}else if($row['description']==8) {echo"Plug Point is not working. ".$row['descText'];} else if($row['description']==16) {echo"Street Light is not working. ".$row['descText'];}else if($row['description']==32) {echo"Power Failure(fuse) problem. ".$row['descText'];}
 			else if($row['description']==3){ echo"Fan, TubeLight is not working. ".$row['descText'];} else if($row['description']==5) {echo"Fan, Switch is not working. ".$row['descText'];} else if($row['description']==9) {echo"Fan, Plug Point is not working. ".$row['descText'];}
 			else if($row['description']==17) {echo" Fan, Street Light is not working. ".$row['descText'];}else if($row['description']==33) {echo" Fan is not working,power failure(fuse) problem. ".$row['descText'];}else if($row['description']==6) {echo"TubeLight, Switch is not working. ".$row['descText'];}
@@ -192,21 +187,45 @@ echo "<p style='margin-top: 50px; margin-left:215px;'><b>SIGNATURE OF ATTENDANT&
 			echo '</form>';			exit();
 		}
 
-		if(1)
-		{//changes here	
-			$sql="Select id,name,designation,location,description,processed,area,time,dispatchedTime,contactPerson, contactNumber, room,timing,descText,contact from complaints ";
+		if(1)//(isset($_POST['Submit']))
+		{
+			$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber,timedesc, room,timing,descText,contact from elcomplaints ";
 			$status="and";
 			$sql.="where ( 1=1 ";
-			$status.=" processed=1";
+
+			if(isset($_POST['process1']))
+				$status.=" processed=2";
+			if(isset($_POST['process2']))
+			{	if($status=="and")
+			    $status.=" processed=1";
+				else
+				$status.=" or processed=1";
+			}
+			if(isset($_POST['process3']))
+			{	if($status=="and")
+			    $status.=" processed=2";
+				else
+				$status.=" or processed=2";
+				if($status=="and")
+			    $status.=" processed=1";
+				else
+				$status.=" or processed=1";
+				if($status=="and")
+			    $status.=" processed=0";
+				else
+				$status.=" or processed=0";
+			}
+
 			if ($status=="and")
 			$sql.=") ";
 			else
 			$sql.=$status.") ";
-if(isset($_POST['nm']))		
+			if(isset($_POST['nm']))		
 			//if($isSetId != 0)
 			{
 				$sql.="and (id=". $_POST['process3'] .")";
 			}
+
 			$sql.=" and (1=1 ";
 			$loc="and";
 			if(isset($_POST['loc1']))
@@ -242,78 +261,20 @@ if(isset($_POST['nm']))
 
 
 		}
-		else//changes here	
-		$sql="Select id,name,designation,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,timing,descText,contact from complaints where processed=0";
+		else
+		$sql="Select id,name,designation,location,description,processed,area,time, contactPerson, contactNumber,timedesc, room,timing,descText,contact from elcomplaints order by processed ASC";
 //limit ".($page*$itemsperpage).",$itemsperpage
 		$result=mysql_query($sql,$conn);
 
 ?>
-<?php require_once('footer.php') ?>
+
 <script>
-
-function calct()
-{
-	var f=document.form1
-	var tr1=0,tr2=0,tr3=0
-	if(f.t1.checked)tr1=1
-	if(f.t2.checked)tr2=2
-	if(f.t3.checked)tr3=4
-	return tr1+tr2+tr3
-}
-
-function validate1()
-{
-var f=document.form1
-var name = f.inchargeName.value;
-var nameReg = /^[a-zA-Z ]*$/;
-if(name=="" || !nameReg.test(name))
-	{	
-              alert("Please enter the Technician Name.\nName can only have Alphabets")
-		f.inchargeName.focus()
-		x = 0;
-		blinkBorder("white","red", f.inchargeName, 500);
-		return false;
-	}
-
-//changes here	
-/*
-if(f.inchargeName.value=="0")
-	{	alert("Please Select your inchargeName.")
-		f.inchargeName.focus()
-		x = 0;
-		blinkBorder("white","red", f.inchargeName, 500);
-		return false;
-	}
-*/
-/*
-var numReg = /^\d+$/;
-if(f.inchargeContact.value=="" || !numReg.test(f.inchargeContact.value) || f.inchargeContact.value.length > 10||f.inchargeContact.value.length < 10)
-	{	alert("Please Enter Proper Contact Number.\nContact can have only numbers (Max 10 digits)");
-		f.inchargeContact.focus()
-		x = 0;
-		blinkBorder("white","red", f.inchargeContact, 500);
-		return false;
-	}
-		
-*/
-
-}
-
-
-function validate()
-{
-var f=document.form1
-f.timing1.value=calct()
-return true
-}
-
-
 
 function myDesc(dVal,descText)
 {
-	var k=0,j=0,j1=0
+	var k=0,j=0,j1=0;
 	var str=""
-		while(dVal>0){
+	while(dVal>0){
 		while(Math.pow(2,k)<=dVal){
 		j=Math.pow(2,k)
 		k+=1;
@@ -325,20 +286,21 @@ function myDesc(dVal,descText)
 			case 4:str+="Switch is not working.<br/>"; break;
 			case 8:str+="Plug point is not working.<br/>"; break;
 			case 16:str+="Street Light is not working.<br/>"; break;
-			case 32:str+="Power Failure(fuse) problem<br/>";break;
+			case 32:str+="Power Failure(fuse) problem.<br/>";break;
 			case 64:str+="Others : "+descText+"<br/>";j1=1;break;
+			
 		}
 		dVal-=j;
 		k=0;
 	}
 	if((descText!="")&&(j1!=1))
-		str+="-"+descText;
+	str+="-"+descText;
 	return document.getElementById("descdiv").innerHTML=str
 
 }
-function myTime(dVal)
+function myTime(dVal,timedesc)
 {
-	var k=0,j=0
+	var k=0,j=0,j1=0;
 	var str=""
 	while(dVal>0){
 		while(Math.pow(2,k)<=dVal){
@@ -347,26 +309,27 @@ function myTime(dVal)
 		}
 		switch(j)
 		{
-			case 1:str+="Weekday 12noon to 1 pm.<br/>"; break;
-			case 2:str+="Weekday 4pm to 6 pm.<br/>"; break;
-			case 4:str+="Weekend 9am to 5pm.<br/>"; break;
-			case 8:str+="Anytime. <br/>";break;
-
+			case 1:str+="weekday 12noon to 1 pm.<br/>"; break;
+			case 2:str+="weekday 3pm to 5:30 pm.<br/>"; break;
+			case 4:str+="saturday 9am to 5pm.<br/>"; break;
+                       case 8:str+="Others : "+timedesc+"<br/>";j1=1;break;
 		}
 		dVal-=j;
 		k=0;
 	}
+         if((timedesc!="")&&(j1!=1))
+        str+="-"+timedesc;
 	return document.getElementById("descdiv").innerHTML=str;
 
 }
 
 
-function rowover(id,str,timing,contact, descText)
+function rowover(id,str,timing,contact,descText,timedesc)
 {
 	id.style.background='#9ec630'; id.style.cursor='pointer';
 	document.getElementById("optiondiv").style.display='none'
 	document.getElementById("descdiv").innerHTML="<h2>Description : </h2>" + myDesc(document.getElementById("desc"+str).value,descText)
-		document.getElementById("descdiv").innerHTML+="<h4>Availablity Time : </h4>" + myTime(document.getElementById("tm"+str).value)
+	document.getElementById("descdiv").innerHTML+="<h4>Availablity Time : </h4>" + myTime(document.getElementById("tm"+str).value,timedesc)
 	if(contact!='')
 	document.getElementById("descdiv").innerHTML+="<h4>Contact Number : </h4>" + contact
 	document.getElementById("descdiv").style.display='block'
@@ -422,10 +385,69 @@ function chkclick(id,str)
 		}
 	}
 }
+var x;
+function blinkBorder(colorA, colorB, element, time){
+  x++;
+  if(x == 10)
+	  return;
+  element.style.borderColor = colorB ;
+  setTimeout( function(){
+    blinkBorder(colorB, colorA, element, time);
+    colorB = null;
+    colorA = null;
+    element = null;
+    time = null;
+  } , time) ;
+}
+
+function validate1()
+{
+var f=document.form1
+var name = f.inchargeName.value;
+var nameReg = /^[a-zA-Z ]*$/;
+if(name=="" || !nameReg.test(name))
+	{	
+              alert("Please enter the Technician Name.\nName can only have Alphabets")
+		f.inchargeName.focus()
+		x = 0;
+		blinkBorder("white","red", f.inchargeName, 500);
+		return false;
+	}
+
+//changes here	
+/*
+if(f.inchargeName.value=="0")
+	{	alert("Please Select your inchargeName.")
+		f.inchargeName.focus()
+		x = 0;
+		blinkBorder("white","red", f.inchargeName, 500);
+		return false;
+	}
+*/
+/*
+var numReg = /^\d+$/;
+if(f.inchargeContact.value=="" || !numReg.test(f.inchargeContact.value) || f.inchargeContact.value.length > 10||f.inchargeContact.value.length < 10)
+	{	alert("Please Enter Proper Contact Number.\nContact can have only numbers (Max 10 digits)");
+		f.inchargeContact.focus()
+		x = 0;
+		blinkBorder("white","red", f.inchargeContact, 500);
+		return false;
+	}
+		
+*/
+
+}
+
+function validate()
+{
+var f=document.form1
+f.timing1.value=calct()
+return true
+}
+
 </script>
-
-<?php require_once('header.php') ?>
-
+<?php require_once('header.php');  ?>
+<?php require_once('footer.php') ?>
  <?php
  /* changes to accomodate date filter */
 if(isset($_SESSION['fromdate']))
@@ -439,24 +461,16 @@ if(isset($_POST['datesubmit']))
                  $_SESSION['todate']=$_POST['todate'];
             }
 ?>
-
-
-
 <div id="menu" >
   <ul id="nav1">
-  <?php 
-  echo '<a href="completed.php"><center>Completed</center></a>' ;
-echo'<a href="dispatched.php"><center><font color=orange>Dispatched</font></center></a><a href="unprocessed.php"><center>Unprocessed</center></a>';  
-    echo '';
-   ?>
-   </ul> 
+  <?php echo '<a href="elreports.php"><center>Reports</center></a>';
+  echo '<a href="elcompleted.php"><center>Completed</center></a>' ;
+echo'<a href="eldispatched.php"><center>Dispatched</center></a><a href="elunprocessed.php"><center>Unprocessed</center></a>';  
+	
+	?>	
+   </ul>
  </div>
-    
-
-
-	<div id="content">
-
-                                             
+     
      <div id="content">
 
          <form name="date" method="post">
@@ -466,32 +480,20 @@ echo'<a href="dispatched.php"><center><font color=orange>Dispatched</font></cent
 <td id="userTbox" width="25%" align="left"><input type="date" name="fromdate" size="26" value="<?php if(isset($_SESSION['fromdate'])){echo $_SESSION['fromdate']; unset($_SESSION['fromdate']); }   ?>" /></td>
 <td width="39%" align="right">To: </td>
 <td id="userTbox" width="25%" align="left"><input type="date" name="todate" size="26"  value="<?php if(isset($_SESSION['todate'])){echo $_SESSION['todate']; unset($_SESSION['todate']); }   ?>"/></td>
-</tr><tr><td></td><td><input type="checkbox"  name="loc1" id="loc1" />
-            <label for="loc1">Hostel</label>
-            <input type="checkbox"  name="loc2" id="loc2" />
-            <label for="loc2">Street</label>
-            <input type="checkbox"  name="loc3" id="loc3"/>
-            <label for="loc3">Departments</label></td><td>
-            </td><td><input type="checkbox"  name="loc4" id="loc4" />
-            <label for="loc4">Mess</label>
-            <input type="checkbox"  name="loc5" id="loc5" />
-            <label for="loc5">Others</label></td>
-           
 </tr>
 <tr><td colspan="4" align="center"><input type="submit" name="datesubmit" value="SHOW"/></td>
 </tr>
-
              </table>
 
          </form>
      </div>
 <!--  Date wise search form ends   -->
 
+ 
 
-            
 
-			
-			<div id="n1right">
+<div id="nright">
+
 <table align="center" width="80%" id="table1">
 <tr>
 <th>Compl.No</th>
@@ -501,16 +503,18 @@ echo'<a href="dispatched.php"><center><font color=orange>Dispatched</font></cent
 <th>Room/Quarter No</th>
 <th>Status</th>
 <th>Time</th>
-<?php //changes here ?><th>Dispatched Time</th>
 <th>Contact Person</th>
 <th>Contact Number</th>
 </tr>
 <?php
-	$i = 0; 
-	while($row=mysql_fetch_array($result))
-	{
+	$i = 0;
+	
+        while($row=mysql_fetch_array($result))
+	{			
+		if(!isset($ids))
+			$ids = 0;
 
-        /*searching in a particular period  */
+                /*searching in a particular period  */
                 if(isset($_POST['datesubmit']))
             {
 
@@ -521,7 +525,7 @@ echo'<a href="dispatched.php"><center><font color=orange>Dispatched</font></cent
 
                   if($f==$t)
                     $t=$f+86400;
-
+                 
                 $timestamp = strtotime($row['time']);
 
 
@@ -532,26 +536,28 @@ echo'<a href="dispatched.php"><center><font color=orange>Dispatched</font></cent
             }
             }
             /*searching code ends */
-		
+
+
 ?>
-<tr <?php if($i%2) { ?> style="background:#CCCCCC" <?php } else { ?> <?php }?> onmouseover="rowover(this,'<?php echo $i ?>','<?php echo $row['time']?>','<?php echo $row['contact']?>','<?php echo $row['descText']?>')" onmouseout="rowout(this,'<?php if($i%2) echo '#CCCCCC'; else echo '#e6e6e6'; ?>','<?php echo $row['id'] ?>')" <?php if($row['processed']!='2') {?>onclick="rowclick(this,'<?php echo $row['id']?>')"<?php } ?>>
+<tr <?php if($i%2) { ?> style="background:#CCCCCC" <?php } else { ?> <?php }?> onmouseover="rowover(this,'<?php echo $i ?>','<?php echo $row['time']?>','<?php echo $row['contact']?>','<?php echo $row['descText']?>','<?php echo $row['timedesc']?>')" onmouseout="rowout(this,'<?php if($i%2) echo '#CCCCCC'; else echo '#e6e6e6'; ?>','<?php echo $row['id'] ?>')" <?php if($row['processed']!='2') {?>onclick="rowclick(this,'<?php echo $row['id']?>')"<?php } ?>>
 <td align="center"><?php echo "EL".str_pad($row['id'],6,"0",STR_PAD_LEFT) ?></td>
-<td align="center"><?php echo $row['name'] ?></td>
+<td align="center"><?php echo $row['name']; ?></td>
 <td align="center"><?php echo $row['designation'] ?></td>
 <td align="center"><?php echo $row['location'] ?></td>
 <td align="center"><?php echo $row['room'] ?></td>
 <input type = "hidden" id = "toPrint<?php echo $row['id'];?>" value="<?php echo $row['processed']; ?>">
 <td align="center"><?php
+$src="images/processed.png";
+$src1="images/unprocessed.png";
 $src2="images/dispatched.png";
 		if ($row['processed']=='1')
 		echo "<img src='$src2'height='20' width='20' border='0'alt='' alt='' />";
 		else if($row['processed']=='2')
-		echo "<image src='finished.jpeg'></img> ";
+		echo "<img src='$src'height='15' width='15' border='0'alt='' alt='' />";
 		else
-		echo "<image src='unprocessed.jpeg'></img>";
+		echo "<img src='$src1'height='20' width='20' border='0'alt='' alt='' />";
  ?></td>
 <td align="center"><?php echo $row['time'] ?></td>
-<td align="center"><?php //changes here ?><?php if(strlen($row['dispatchedTime']) != 0) echo $row['dispatchedTime']; ?></td>
 <td align="center"><?php echo $row['contactPerson'] ?></td>
 <td align="center"><?php echo $row['contactNumber'] ?></td>
 <input type="checkbox" name="<?php echo $row['id'] ?>" id="ID<?php echo $row['id']?>" style="display:none"/>
@@ -569,12 +575,9 @@ $i++;
 </table><br />
 <input type="hidden" name="ids" value="<?php echo $ids ?>" />
 </div>
-
-
-
-
+</div>
 <div  class="box" id="left1">
-<div id = "incharge" style="margin-left:8px;"><br />
+<div id = "incharge" style="margin-left:8px;">
 <!--
 Technician Allotted:<?php echo '&nbsp';?><select name="inchargeName" id='inchargeName' value="options" disabled="true">
 <option value="0">Select</option>
@@ -585,7 +588,7 @@ Technician Allotted:<?php echo '&nbsp';?><select name="inchargeName" id='incharg
 </SELECT>
 //changes here-->
 
-<br /><br />Technician:<?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?><input disabled = "true" type = 'text' id = 'inchargeName' name = 'inchargeName' />
+Technician:<?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?><input disabled = "true" type = 'text' id = 'inchargeName' name = 'inchargeName' />
 <br /><br />Contact:<?php echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'; ?><input disabled = "true" type = 'text' id = 'inchargeContact' name = 'inchargeContact' />
 <br /><br />
 </div>
@@ -600,15 +603,14 @@ Technician Allotted:<?php echo '&nbsp';?><select name="inchargeName" id='incharg
 <div class="box" id="descdiv" style="display:none; position:fixed;right:20px;min-width:180px;"></div>
 
 </div>
-<?php require_once('footer.php') ?>
 
-</form>
 </div>
 
-
+</form>
 <form name="formSearch" method="post">
 <input style="position:absolute;top:150px;right:105px;" type="input" id = "searchText" name="process3" />
 <input style="position:absolute;top:150px;right:20px;" type="submit" id = "searchBtn" name="nm" value="search" />
 </form>
+
 </body>
 </html>

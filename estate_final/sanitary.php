@@ -5,7 +5,7 @@ require_once('conn.php');
 		if(isset($_POST['Submit']))
 		{
 			
-$sql="Insert into complaints(username, name,designation,location,Lab,Toilet,Office,Classroom,area,description,room,timing,timedesc,contact,email, descText) values('" . $_SESSION['user'] . "', '".mysql_real_escape_string($_POST['username'])."',";
+$sql="Insert into sncomplaints(username, name,designation,location,Lab,Toilet,Office,Classroom,area,description,room,timing,timedesc,contact,email, descText) values('" . $_SESSION['user'] . "', '".mysql_real_escape_string($_POST['username'])."',";
 			$sql.="'".mysql_real_escape_string($_POST['desig'])."'," ;
 			$sql.="'".$_POST['location']."'," ;
                         $sql.="'".mysql_real_escape_string($_POST['dd1'])."',";

@@ -38,7 +38,7 @@ header("Location: login.php");
 		
 		if(1)
 		{
-			$sql="Select id,name,designation,department,location,description,processed,area,time,dispatchedTime,room, contactPerson, contactNumber, availablefrom,availableto,contact from complaints ";
+			$sql="Select id,name,designation,location,description,processed,area,time,dispatchedTime,room, contactPerson, contactNumber, contact from complaints ";
 			$status="and";
 			$sql.="where ( 1=1 ";
 			
@@ -97,7 +97,7 @@ if(isset($_POST['nm']))
 
 		}
 		else
-		$sql="Select id,name,designation,department,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,timing,availablefrom,availableto,contact from complaints where processed=1 order by time ASC";
+		$sql="Select id,name,designation,location,description,processed,area,time,dispatchedTime, contactPerson, contactNumber, room,timing,contact from complaints where processed=1 order by time ASC";
 		$result=mysql_query($sql,$conn);
 
 ?>

@@ -411,9 +411,9 @@ Bathroom/Toilets <input type="checkbox" checked="checked" name="h3" value="4"  /
 	}}
 ?>
 </select>
-<br /><input type="checkbox" name="o1" value="1"  />Office<br />
+<!--<br /><input type="checkbox" name="o1" value="1"  />Office<br />
 <input type="checkbox" name="o2" value="2"  />Toilets<br/>
-<input type="checkbox" name="o3" value="4"  />Corridor<br/>
+<input type="checkbox" name="o3" value="4"  />Corridor<br/>-->
 </div>
 
 </td><td align="left" width="100%">
